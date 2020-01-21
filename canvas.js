@@ -35,21 +35,16 @@ class Circle {
     this.generateColor =
       colorBulets[Math.floor(Math.random() * colorBulets.length)];
   }
-  
 
-  draw = function() {
+  draw = () => {
     context.beginPath();
-    // context.strokeText("DVD", this.x - 10, this.y + 5);
     context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     context.fillStyle = this.generateColor;
-
-    // context.strokeStyle = "#000";
-    // context.stroke();
     context.fill();
     return this;
-  };
+  }
 
-  update = function() {
+  update = () => {
     if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
       this.dx = -this.dx;
     }
@@ -60,19 +55,26 @@ class Circle {
     this.y += this.dy;
 
     //interactive mouse hover
+    interactiveMouse.hover(this)
+  }
+}
+
+//interactive options
+const interactiveMouse = {
+  hover: param => {
     if (
-      mouse.x - this.x < 50 &&
-      mouse.x - this.x > -50 &&
-      mouse.y - this.y < 50 &&
-      mouse.y - this.y > -50
+      mouse.x - param.x < 50 &&
+      mouse.x - param.x > -50 &&
+      mouse.y - param.y < 50 &&
+      mouse.y - param.y > -50
     ) {
-      if (this.radius < maxRadius) {
-        this.radius += 1;
+      if (param.radius < maxRadius) {
+        param.radius += 1;
       }
-    } else if (this.radius > this.minRadius) {
-      this.radius -= 1;
+    } else if (param.radius > param.minRadius) {
+      param.radius -= 1;
     }
-  };
+  }
 }
 
 //toggle menu 
@@ -173,7 +175,7 @@ let fpsCount = {
 };
 
 var circleArray = [];
-function initParticle() {
+const initParticle = () => {
   circleArray = [];
   for (let i = 0; i < totalParticles.value; i++) {
     var radius = Math.random() * 5 + 1;
@@ -186,7 +188,7 @@ function initParticle() {
 }
 initParticle();
 
-function animate() {
+const animate = () => {
   requestAnimationFrame(animate);
   context.clearRect(0, 0, innerWidth, innerHeight);
 
