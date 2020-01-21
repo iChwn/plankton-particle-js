@@ -148,6 +148,30 @@ const getType = type => {
   }
 }
 
+//calculate FPS
+let fpsCount = {
+  startTime: 0,
+  frameNumber: 0,
+  getFPS: function() {
+      this.frameNumber++;
+      var d = performance.now(),
+          currentTime = (d - this.startTime) / 1000,
+          result = Math.floor((this.frameNumber / currentTime));
+      if (currentTime > 1) {
+          this.startTime = performance.now();
+          this.frameNumber = 0;
+      }
+
+      context.beginPath();
+      context.fillStyle = "rgba(0,0,0,0.8)"; 
+      context.fillRect(canvas.width-105, 30, 70, 25);
+      context.stroke();
+      context.fillStyle = "#FFF"; 
+      context.font = '20px serif';
+      context.fillText(`${result} FPS`, canvas.width-100, 50);
+  }
+};
+
 var circleArray = [];
 function initParticle() {
   circleArray = [];
@@ -169,5 +193,7 @@ function animate() {
   for (let i = 0; i < circleArray.length; i++) {
     circleArray[i].draw().update();
   }
+ 
+  fpsCount.getFPS()
 }
 animate();
