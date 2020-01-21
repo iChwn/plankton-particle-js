@@ -9,10 +9,36 @@
   </head>
   <body>
     <div>
-      <div class="canvas-devide ">
+      <div class="canvas-devide">
+        <div class="options-wrapper">
+          <div class="toggle-hidden" onclick="toggleMenu(this)" data-toggle="false">&laquo;</div>
+          <div class="wrapper-form">
+            <span>Particles</span>
+            <input type="number" id="total-particle">
+          </div>
+          <div class="wrapper-form">
+            <span>Particles Size</span>
+            <input type="number" id="circle-size">
+          </div>
+          <div class="wrapper-form">
+            <div class="row-wrapper">
+              <span>Particles Speed</span>
+              <input type="checkbox" onclick="changeBounce()" id="isSpeed" checked>
+            </div>
+            <input type="number" id="particle-speed">
+          </div>
+          <div class="wrapper-form">
+            <span>Bounce X</span>
+            <input type="number" id="bounce-x" disabled>
+          </div>
+          <div class="wrapper-form">
+            <span>Bounce Y</span>
+            <input type="number" id="bounce-y" disabled>
+          </div>
+        </div>
         <canvas id="myCanvas"></canvas>
       </div>
-      <div style="height: 500px;width:100%"></div>
+      <!-- <div style="height: 500px;width:100%"></div> -->
     </div>
     <script src="./canvas.js"></script>
   </body>
