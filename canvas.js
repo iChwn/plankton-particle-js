@@ -45,6 +45,7 @@ class Circle {
   }
 
   update = () => {
+    //bounch boundary
     if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
       this.dx = -this.dx;
     }
@@ -55,7 +56,9 @@ class Circle {
     this.y += this.dy;
 
     //interactive mouse hover
-    interactiveMouse.hover(this)
+    let isScaled = document.querySelector("#isScale")
+    isScaled.checked && interactiveMouse.hover(this)
+    // interactiveMouse.connect()
   }
 }
 
@@ -74,7 +77,34 @@ const interactiveMouse = {
     } else if (param.radius > param.minRadius) {
       param.radius -= 1;
     }
+  },
+  connect: _ => {
+    let p1, p2;
+    for (let i = 0; i < totalParticles.value-1; i++) {
+      p1 = circleArray[i];
+      for (let j = i + 1; j < totalParticles.value; j++) {
+        p2 = circleArray[j];
+        let currentDist = getDistance(p2.x, p1.x, p2.y, p1.y);
+        //100 = distance between particles           
+        if (currentDist < 100) {
+          context.beginPath();
+          context.lineWidth = .1;
+          context.strokeStyle = 'rgba(0,0,0,0.1)';
+          context.fillStyle = 'rgba(0,0,0,0.1)';
+          context.moveTo(p1.x, p1.y);
+          context.lineTo(p2.x, p2.y, p1.x, p1.y);
+          context.stroke();
+        } 
+      }
+    }
   }
+}
+
+//get distacce between circle
+const getDistance = (x1, x2, y1, y2) => {
+  let a = x1 - x2
+  let b = y1 - y2
+	return Math.sqrt(a * a + b * b);
 }
 
 //toggle menu 
@@ -96,7 +126,7 @@ const toggleMenu = param => {
  * Dynamic Options
  */
 let totalParticles =  document.querySelector("#total-particle")
-totalParticles.value = 200
+totalParticles.value = 100
 let circleSize =  document.querySelector("#circle-size")
 circleSize.value = 1
 let isSpeed = document.querySelector("#isSpeed")
@@ -196,6 +226,20 @@ const animate = () => {
     circleArray[i].draw().update();
   }
  
+  //shwo FPS
   fpsCount.getFPS()
 }
 animate();
+
+// add +5 particles on click
+canvas.addEventListener("mousedown", event => {
+  for (let i = 0; i < 5; i++) {
+    var radius = Math.random() * 5 + 1;
+    var x =  event.x;
+    var y =  event.y;
+    var dx = (Math.random() - 0.5) * getType("x");
+    var dy = (Math.random() - 0.5) * getType("y");
+    circleArray.push(new Circle(x, y, dx, dy, radius));
+  }
+  totalParticles.value = parseInt(totalParticles.value) +5 
+});
