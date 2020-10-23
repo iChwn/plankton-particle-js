@@ -1,5 +1,6 @@
 let canvas = document.querySelector("#myCanvas");
 let context = canvas.getContext("2d");
+let isMouseDown = false
 
 const updateCanvas = () => {
   canvas.width = window.innerWidth;
@@ -250,8 +251,7 @@ const animate = () => {
 }
 animate();
 
-// add +5 particles on click
-canvas.addEventListener("mousedown", event => {
+const addParticle = event => {
   for (let i = 0; i < 5; i++) {
     var radius = Math.random() * 5 + 1;
     var x =  event.x;
@@ -261,4 +261,20 @@ canvas.addEventListener("mousedown", event => {
     shapeArray.push(new Shape({ x, y, dx, dy, radius, shape: shape.value }));
   }
   totalParticles.value = parseInt(totalParticles.value) +5 
+}
+
+// add +5 particles on click
+canvas.addEventListener("mousedown", event => {
+  addParticle(event) 
+  isMouseDown = true
+});
+
+canvas.addEventListener("mouseup", event => {
+  addParticle(event) 
+  isMouseDown = false
+});
+
+canvas.addEventListener("mousemove", event => {
+  if(isMouseDown)
+    addParticle(event)
 });
