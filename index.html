@@ -13,12 +13,19 @@
         <div class="options-wrapper">
           <div class="toggle-hidden" onclick="toggleMenu(this)" data-toggle="false">&laquo;</div>
           <div class="wrapper-form">
+            <span>Shape</span>
+            <select id="shape">
+              <option value="circle">Circle</option>
+              <option value="square">Squre</option>
+            </select>
+          </div>
+          <div class="wrapper-form">
             <span>Particles</span>
             <input type="number" id="total-particle">
           </div>
           <div class="wrapper-form">
             <span>Particles Size</span>
-            <input type="number" id="circle-size">
+            <input type="number" id="shape-size">
           </div>
           <div class="wrapper-form">
             <div class="row-wrapper">

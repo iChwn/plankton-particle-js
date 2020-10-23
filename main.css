@@ -54,7 +54,7 @@ body {
   align-items: center;
 }
 
-input {
+input, select {
   margin-top: 5px;
 }
 input:focus{
