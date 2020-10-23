@@ -1,5 +1,6 @@
 let canvas = document.querySelector("#myCanvas");
 let context = canvas.getContext("2d");
+let isMouseDown = false
 
 const updateCanvas = () => {
   canvas.width = window.innerWidth;
@@ -76,17 +77,19 @@ class Shape {
 //interactive options
 const interactiveMouse = {
   hover: param => {
-    if (
-      mouse.x - param.x < 50 &&
-      mouse.x - param.x > -50 &&
-      mouse.y - param.y < 50 &&
-      mouse.y - param.y > -50
-    ) {
-      if (param.radius < maxRadius) {
-        param.radius += 1;
+    if (!isMouseDown) {
+      if (
+        mouse.x - param.x < 50 &&
+        mouse.x - param.x > -50 &&
+        mouse.y - param.y < 50 &&
+        mouse.y - param.y > -50
+      ) {
+        if (param.radius < maxRadius) {
+          param.radius += 1;
+        }
+      } else if (param.radius > param.minRadius) {
+        param.radius -= 1;
       }
-    } else if (param.radius > param.minRadius) {
-      param.radius -= 1;
     }
   },
   connect: _ => {
@@ -139,7 +142,7 @@ const toggleMenu = param => {
 let totalParticles =  document.querySelector("#total-particle")
 totalParticles.value = 100
 let shapeSize =  document.querySelector("#shape-size")
-shapeSize.value = 1
+shapeSize.value = 10
 let isSpeed = document.querySelector("#isSpeed")
 let speedParticle = document.querySelector("#particle-speed")
 speedParticle.value = 3
@@ -227,7 +230,7 @@ var shapeArray = [];
 const initParticle = () => {
   shapeArray = [];
   for (let i = 0; i < totalParticles.value; i++) {
-    var radius = Math.random() * 5 + 1;
+    var radius = Math.random() * shapeSize.value + 1;
     var x = Math.random() * (innerWidth - radius * 2) + radius;
     var y = Math.random() * (innerHeight - radius * 2) + radius;
     var dx = (Math.random() - 0.5) * getType("x");
@@ -250,10 +253,9 @@ const animate = () => {
 }
 animate();
 
-// add +5 particles on click
-canvas.addEventListener("mousedown", event => {
+const addParticle = event => {
   for (let i = 0; i < 5; i++) {
-    var radius = Math.random() * 5 + 1;
+    var radius = Math.random() * shapeSize.value + 1;
     var x =  event.x;
     var y =  event.y;
     var dx = (Math.random() - 0.5) * getType("x");
@@ -261,4 +263,20 @@ canvas.addEventListener("mousedown", event => {
     shapeArray.push(new Shape({ x, y, dx, dy, radius, shape: shape.value }));
   }
   totalParticles.value = parseInt(totalParticles.value) +5 
+}
+
+// add +5 particles on click
+canvas.addEventListener("mousedown", event => {
+  addParticle(event) 
+  isMouseDown = true
+});
+
+canvas.addEventListener("mouseup", event => {
+  addParticle(event) 
+  isMouseDown = false
+});
+
+canvas.addEventListener("mousemove", event => {
+  if(isMouseDown)
+    addParticle(event)
 });
