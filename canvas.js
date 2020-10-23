@@ -165,6 +165,8 @@ const changeBounce = () => {
     speedParticle.disabled = true
     speedParticle.value = 3
   }
+
+  initParticle()
 }
 
 //type of bounce
