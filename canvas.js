@@ -23,22 +23,33 @@ canvas.addEventListener("mousemove", event => {
 let = maxRadius = 50;
 let colorBulets = ["#ffaa33", "#99ffaa", "#80ff00", "#4411aa", "#ff1100"];
 
-//Draw circles
-class Circle {
-  constructor(x, y, dx, dy, radius) {
+//Draw shape
+class Shape {
+  constructor({ x, y, dx, dy, radius, shape = 'circle' }) {
     this.x = x;
     this.y = y;
     this.dx = dx;
     this.dy = dy;
     this.radius = radius;
     this.minRadius = radius;
+    this.shape = shape;
     this.generateColor =
       colorBulets[Math.floor(Math.random() * colorBulets.length)];
   }
 
   draw = () => {
     context.beginPath();
-    context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+
+    switch (this.shape) {
+			case 'square':
+				context.rect(this.x, this.y, this.radius, this.radius, false)
+				break
+
+			default:
+				context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+				break
+		}
+
     context.fillStyle = this.generateColor;
     context.fill();
     return this;
@@ -81,9 +92,9 @@ const interactiveMouse = {
   connect: _ => {
     let p1, p2;
     for (let i = 0; i < totalParticles.value-1; i++) {
-      p1 = circleArray[i];
+      p1 = shapeArray[i];
       for (let j = i + 1; j < totalParticles.value; j++) {
-        p2 = circleArray[j];
+        p2 = shapeArray[j];
         let currentDist = getDistance(p2.x, p1.x, p2.y, p1.y);
         //100 = distance between particles           
         if (currentDist < 100) {
@@ -100,7 +111,7 @@ const interactiveMouse = {
   }
 }
 
-//get distacce between circle
+//get distacce between shape
 const getDistance = (x1, x2, y1, y2) => {
   let a = x1 - x2
   let b = y1 - y2
@@ -127,8 +138,8 @@ const toggleMenu = param => {
  */
 let totalParticles =  document.querySelector("#total-particle")
 totalParticles.value = 100
-let circleSize =  document.querySelector("#circle-size")
-circleSize.value = 1
+let shapeSize =  document.querySelector("#shape-size")
+shapeSize.value = 1
 let isSpeed = document.querySelector("#isSpeed")
 let speedParticle = document.querySelector("#particle-speed")
 speedParticle.value = 3
@@ -136,13 +147,19 @@ let bounceX = document.querySelector("#bounce-x")
 bounceX.value = 3
 let bounceY = document.querySelector("#bounce-y")
 bounceY.value = 3
+let shape = document.querySelector("#shape")
+shape.value = 'circle'
 
 //add on enter event
-let selectedElements = [totalParticles,circleSize,speedParticle,bounceX,bounceY]
+let selectedElements = [totalParticles,shapeSize,speedParticle,bounceX,bounceY]
 selectedElements.map(res => {
   res.addEventListener("keypress", e=> {
     e.key === "Enter" && initParticle()
   })
+})
+
+shape.addEventListener('change', () => {
+  initParticle()
 })
 
 //change bounce type
@@ -206,16 +223,16 @@ let fpsCount = {
   }
 };
 
-var circleArray = [];
+var shapeArray = [];
 const initParticle = () => {
-  circleArray = [];
+  shapeArray = [];
   for (let i = 0; i < totalParticles.value; i++) {
     var radius = Math.random() * 5 + 1;
     var x = Math.random() * (innerWidth - radius * 2) + radius;
     var y = Math.random() * (innerHeight - radius * 2) + radius;
     var dx = (Math.random() - 0.5) * getType("x");
     var dy = (Math.random() - 0.5) * getType("y");
-    circleArray.push(new Circle(x, y, dx, dy, radius));
+    shapeArray.push(new Shape({ x, y, dx, dy, radius, shape: shape.value }));
   }
 }
 initParticle();
@@ -224,8 +241,8 @@ const animate = () => {
   requestAnimationFrame(animate);
   context.clearRect(0, 0, innerWidth, innerHeight);
 
-  for (let i = 0; i < circleArray.length; i++) {
-    circleArray[i].draw().update();
+  for (let i = 0; i < shapeArray.length; i++) {
+    shapeArray[i].draw().update();
   }
  
   //shwo FPS
@@ -241,7 +258,7 @@ canvas.addEventListener("mousedown", event => {
     var y =  event.y;
     var dx = (Math.random() - 0.5) * getType("x");
     var dy = (Math.random() - 0.5) * getType("y");
-    circleArray.push(new Circle(x, y, dx, dy, radius));
+    shapeArray.push(new Shape({ x, y, dx, dy, radius, shape: shape.value }));
   }
   totalParticles.value = parseInt(totalParticles.value) +5 
 });
