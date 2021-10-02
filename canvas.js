@@ -44,15 +44,22 @@ class Shape {
     switch (this.shape) {
 			case 'square':
 				context.rect(this.x, this.y, this.radius, this.radius, false)
+    		break
+
+			case 'shinomiya':
+        const image = document.getElementById('source');
+        let size = (parseFloat(this.radius) * 5 + 2); 
+        context.drawImage(image, this.x, this.y, size, size);
 				break
 
 			default:
 				context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
 				break
-		}
-
+    }
+    
     context.fillStyle = this.generateColor;
     context.fill();
+    
     return this;
   }
 
@@ -156,7 +163,7 @@ shape.value = 'circle'
 //add on enter event
 let selectedElements = [totalParticles,shapeSize,speedParticle,bounceX,bounceY]
 selectedElements.map(res => {
-  res.addEventListener("keypress", e=> {
+  res.addEventListener("keypress", e => {
     e.key === "Enter" && initParticle()
   })
 })
@@ -235,6 +242,7 @@ const initParticle = () => {
     var y = Math.random() * (innerHeight - radius * 2) + radius;
     var dx = (Math.random() - 0.5) * getType("x");
     var dy = (Math.random() - 0.5) * getType("y");
+    
     shapeArray.push(new Shape({ x, y, dx, dy, radius, shape: shape.value }));
   }
 }
