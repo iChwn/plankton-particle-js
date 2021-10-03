@@ -46,11 +46,17 @@ class Shape {
 				context.rect(this.x, this.y, this.radius, this.radius, false)
     		break
 
-			case 'shinomiya':
-        const image = document.getElementById('source');
-        let size = (parseFloat(this.radius) * 5 + 2); 
+      case 'shinomiya':
+        var image = document.getElementById('source-shinomiya');
+        var size = (parseFloat(this.radius) * 5 + 2); 
         context.drawImage(image, this.x, this.y, size, size);
-				break
+        break
+
+      case 'emerald':
+        var image = document.getElementById('source-emerald');
+        var size = (parseFloat(this.radius) * 5 + 2); 
+        context.drawImage(image, this.x, this.y, size, size);
+        break
 
 			default:
 				context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
