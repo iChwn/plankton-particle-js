@@ -52,6 +52,42 @@ class Shape {
         context.drawImage(image, this.x, this.y, size, size);
 				break
 
+      case 'triangle':
+        var rand = Math.random()
+        var x1 = this.x
+        var x2 = this.x - rand
+        var x3 = this.x + rand
+        var y1 = this.y
+        var y2 = rand * 2
+        var y3 = rand * 2
+
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
+        context.lineTo(x3, y3);
+        
+        // context.moveTo(x1, y1);
+        // context.lineTo(x2, y2);
+        // context.lineTo(x3, y3);
+        break
+      
+      case 'line':
+        var rand = Math.random()
+        var x1 = this.x
+        var x2 = this.x - rand
+        var x3 = this.x + rand
+        var y1 = this.y
+        var y2 = rand * 2
+        var y3 = rand * 2
+
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
+        context.lineTo(x3, y3);
+        
+        // context.moveTo(x1, y1);
+        // context.lineTo(x2, y2);
+        // context.lineTo(x3, y3);
+        break
+
 			default:
 				context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
 				break
