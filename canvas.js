@@ -56,7 +56,7 @@ class Shape {
       case 'triangle':
         var scale = this.radius * Math.cos(Math.PI / 6) + 2.5;
         var x = this.x
-        var y = this.x
+        var y = this.y
         var x2 = this.x + scale
         var y2 = this.y + scale
 
