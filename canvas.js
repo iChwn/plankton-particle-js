@@ -6,6 +6,7 @@ const updateCanvas = () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 };
+
 updateCanvas();
 window.addEventListener("resize", () => {
   updateCanvas();
@@ -53,30 +54,17 @@ class Shape {
 				break
 
       case 'triangle':
-        var height = this.radius * Math.cos(Math.PI / 6) + 2.5;
+        var scale = this.radius * Math.cos(Math.PI / 6) + 2.5;
+        var x = this.x
+        var y = this.x
+        var x2 = this.x + scale
+        var y2 = this.y + scale
 
-        // console.log([
-        //   {
-        //     x: x1,
-        //     y: y1,
-        //   },
-        //   {
-        //     x: x2,
-        //     y: y2,
-        //   },
-        //   {
-        //     x: x3,
-        //     y: y3,
-        //   },
-        // ])
-
-
-        context.moveTo(this.x, this.y);
-        context.lineTo(this.x, this.y + height);
-        context.lineTo(this.x + height, this.y + height);
-        // context.lineTo(x3, y3 - height);
+        context.moveTo(x, y);
+        context.lineTo(x, y2);
+        context.lineTo(x2, y2);
         context.closePath();
-        
+
         break
       
       case 'line':
@@ -91,10 +79,6 @@ class Shape {
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
         context.lineTo(x3, y3);
-        
-        // context.moveTo(x1, y1);
-        // context.lineTo(x2, y2);
-        // context.lineTo(x3, y3);
         break
 
 			default:
